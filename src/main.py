@@ -13,13 +13,23 @@ class Main:
     def mainloop(self):
         game = self.game
         screen = self.screen
+        dragger = self.game.dragger
 
         while True:
             game.show_bg(screen)
             game.show_pieces(screen)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pass
+
+                elif event.type == pygame.MOUSEMOTION:
+                    pass
+                
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    pass
+
+                elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
