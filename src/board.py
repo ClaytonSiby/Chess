@@ -148,6 +148,34 @@ class Board:
                     possible_move_row = possible_move_row + row_increment
                     possible_move_col = possible_move_col + column_increment
 
+        def king_moves():
+            adjacents = [
+                (row - 1, col + 0), # up
+                (row - 1, col + 1), # up-right
+                (row + 0, col + 1), # right
+                (row + 1, col + 1), # down-right
+                (row + 1, col + 0), # down
+                (row + 1, col - 1), # down-left
+                (row + 0, col - 1), # left
+                (row - 1, col - 1), # up-left
+            ]
+
+            for adjacent_move in adjacents:
+                adjacent_move_row, adjacent_move_col = adjacent_move
+
+                if Square.in_range(adjacent_move_row, adjacent_move_col):
+                    if self.squares[adjacent_move_row][adjacent_move_col].is_empty_or_enemy(piece.color):
+                        # create a new move
+                        initial_square = Square(row, col)
+                        final_square   = Square(adjacent_move_row, adjacent_move_col)
+
+                        # create a move
+                        move = Move(initial_square, final_square)
+
+                        # add a new valid possible move
+                        piece.add_move(move)
+
+
         if isinstance(piece, Pawn):
             pawn_moves()
 
@@ -186,4 +214,4 @@ class Board:
             straightline_moves(moves_for_the_queen)
 
         elif isinstance(piece, King):
-            pass
+            king_moves()
