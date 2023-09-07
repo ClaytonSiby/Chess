@@ -6,6 +6,7 @@ from move import *
 class Board:
     def __init__(self):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COLS)]
+        self.last_move = None
 
         self._create()
         self._add_pieces('white')
@@ -164,7 +165,7 @@ class Board:
                 adjacent_move_row, adjacent_move_col = adjacent_move
 
                 if Square.in_range(adjacent_move_row, adjacent_move_col):
-                    if self.squares[adjacent_move_row][adjacent_move_col].is_empty_or_enemy(piece.color):
+                    if self.squares[adjacent_move_row][adjacent_move_col].is_empty_or_has_enemy_piece(piece.color):
                         # create a new move
                         initial_square = Square(row, col)
                         final_square   = Square(adjacent_move_row, adjacent_move_col)
@@ -215,3 +216,22 @@ class Board:
 
         elif isinstance(piece, King):
             king_moves()
+
+    def move(self, piece, move):
+        initial_square = move.initial_square
+        final_square = move.final_square
+
+        self.squares[initial_square.row][initial_square.col].piece = None
+        self.squares[final_square.row][final_square.col].piece = piece
+
+        # move pieces
+        piece.moved = True
+
+        # clear valid moves after changing position
+        piece.clear_moves()
+
+        self.last_move = move
+
+
+    def valid_move(self, piece, move):
+        return move in piece.valued_moves
