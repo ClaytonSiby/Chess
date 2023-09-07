@@ -53,5 +53,18 @@ class Game:
                 # blit
                 pygame.draw.rect(surface, color, rectangle)
 
+    def show_last_move(self, surface):
+        if self.board.last_move:
+            initial_square = self.board.last_move.initial_square
+            final_square = self.board.last_move.final_square
+
+            for position in [initial_square, final_square]:
+                # set color
+                color = (244, 247, 116) if (position.row + position.col) % 2 == 0 else (172, 195, 51)
+                # rect
+                rectangle = (position.col * SQUARESIZE, position.row * SQUARESIZE, SQUARESIZE, SQUARESIZE)
+                # blit
+                pygame.draw.rect(surface, color, rectangle)
+
     def next_turn(self):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
