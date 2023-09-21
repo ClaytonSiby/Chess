@@ -5,5 +5,5 @@ class Sound:
         self.path = path
         self.sound = pygame.mixer.Sound(path)
 
-    def play_sound(self):
+    def play(self):
         pygame.mixer.Sound.play(self.sound)

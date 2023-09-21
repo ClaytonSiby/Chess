@@ -4,6 +4,7 @@ from const import *
 from board import Board
 from dragger import Dragger
 from config import Config
+from square import Square
 
 class Game:
     def __init__(self):
@@ -24,6 +25,22 @@ class Game:
                 rectangle = (col * SQUARESIZE, row * SQUARESIZE, SQUARESIZE, SQUARESIZE)
 
                 pygame.draw.rect(surface, color, rectangle)
+
+                # row coordinates
+                if col == 0:
+                    color = theme.background_color.dark if row % 2 == 0 else theme.background_color.light
+                    # label
+                    label = self.config.font.render(str(ROWS-row), 1, color)
+                    label_position = (5, 5 + row * SQUARESIZE)
+                    surface.blit(label, label_position)
+
+                # row coordinates
+                if row == 7:
+                    color = theme.background_color.dark if (row + col) % 2 == 0 else theme.background_color.light
+                    # label
+                    label = self.config.font.render(Square.get_alphacol(col), 1, color)
+                    label_position = (col * SQUARESIZE + SQUARESIZE - 20, HEIGHT - 20)
+                    surface.blit(label, label_position)
 
     def show_pieces(self, surface):
         for row in range(ROWS):
@@ -88,3 +105,12 @@ class Game:
 
     def change_theme(self):
         self.config.change_theme()
+
+    def play_sound(self, captured: False):
+        if captured:
+            self.config.capture_sound.play()
+        else:
+            self.config.move_sound.play()
+
+    def reset(self):
+        self.__init__()
